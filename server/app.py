@@ -2,6 +2,7 @@ from flask import Flask
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from sql_db_instance import db
+from arrayAPI import one_query, Variables
 
 def create_app():
     print("this is createapp")
@@ -19,13 +20,12 @@ def setup_database(app):
 
         db.create_all()
         engine = db.get_engine()
-        df = pd.read_csv('cs-test.csv')
+        df = pd.read_csv('smallset.csv')
         print('this is setupdatabase')
-    
-        if df is not None:
-            return
-        else:
-            df.to_sql('APPLICANTS', con=engine, index_label='id')
+        df.to_sql('APPLICANTS', con=engine, index_label='id', if_exists='replace')
+        one_query()
+
+        return
 
 
 
